@@ -237,28 +237,6 @@ def run_simulation():
         # Step 2: Run the drain simulation
         balance_timeline = simulate_drain(account_info['account_id'], months)
         
-        """""
-        # Step 3: Calculate summary statistics
-        final_balance = balance_timeline[-1]['balance'] if balance_timeline else INITIAL_BALANCE
-        total_spent = months * MONTHLY_EXPENSES
-        money_lost = INITIAL_BALANCE - final_balance
-        
-        return jsonify({
-            'success': True,
-            'simulation': {
-                'account_id': account_info['account_id'],
-                'customer_id': account_info['customer_id'],
-                'months_simulated': months,
-                'initial_balance': INITIAL_BALANCE,
-                'final_balance': final_balance,
-                'total_expenses': total_spent,
-                'money_remaining': final_balance,
-                'percentage_depleted': round((money_lost / INITIAL_BALANCE) * 100, 1)
-            },
-            'timeline': balance_timeline,
-            'warning': 'This demonstrates why negotiating salary NOW matters - every dollar counts during career transitions.'
-        }), 200
-        """""
         # Step 3: Calculate summary statistics
         final_balance = balance_timeline[-1]['balance'] if balance_timeline else INITIAL_BALANCE
         total_spent = months * MONTHLY_EXPENSES

@@ -123,7 +123,7 @@ def simulate_drain(account_id, months):
             withdrawal_payload = {
                 "medium": "balance",
                 "transaction_date": datetime.now().strftime("%Y-%m-%d"),
-                "status": "pending",
+                "status": "completed",
                 "description": f"Month {month} living expenses",
                 "amount": MONTHLY_EXPENSES
             }
@@ -153,7 +153,7 @@ def simulate_drain(account_id, months):
                 continue
             
             # Small delay to avoid rate limiting
-            time.sleep(0.5)
+            time.sleep(1.0)
             
             # Fetch updated account balance
             account_response = requests.get(
@@ -237,6 +237,7 @@ def run_simulation():
         # Step 2: Run the drain simulation
         balance_timeline = simulate_drain(account_info['account_id'], months)
         
+        """""
         # Step 3: Calculate summary statistics
         final_balance = balance_timeline[-1]['balance'] if balance_timeline else INITIAL_BALANCE
         total_spent = months * MONTHLY_EXPENSES
@@ -257,6 +258,37 @@ def run_simulation():
             'timeline': balance_timeline,
             'warning': 'This demonstrates why negotiating salary NOW matters - every dollar counts during career transitions.'
         }), 200
+        """""
+        # Step 3: Calculate summary statistics
+        final_balance = balance_timeline[-1]['balance'] if balance_timeline else INITIAL_BALANCE
+        total_spent = months * MONTHLY_EXPENSES
+        money_lost = INITIAL_BALANCE - final_balance
+        percentage_depleted = round((money_lost / INITIAL_BALANCE) * 100, 1)
+
+        warning_msg = "This demonstrates why negotiating salary NOW matters - every dollar counts during career transitions."
+
+        return jsonify({
+            "success": True,
+            "simulation": {
+                "account_id": account_info["account_id"],
+                "customer_id": account_info["customer_id"],
+                "months_simulated": months,
+                "initial_balance": INITIAL_BALANCE,
+                "final_balance": final_balance,
+
+                # ✅ fields the test script expects
+                "total_spent": total_spent,
+                "depletion_percentage": percentage_depleted,
+                "warning": warning_msg,
+
+                # ✅ keep your original field names too (harmless)
+                "total_expenses": total_spent,
+                "money_remaining": final_balance,
+                "percentage_depleted": percentage_depleted
+            },
+            "timeline": balance_timeline
+        }), 200
+
         
     except ValueError:
         return jsonify({

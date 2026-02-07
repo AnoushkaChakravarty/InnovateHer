@@ -6,7 +6,7 @@ Run this AFTER starting the Flask server to verify everything works
 import requests
 import json
 
-BASE_URL = "http://localhost:5000"
+BASE_URL = "http://localhost:8000"
 
 def test_health_check():
     """Test the health endpoint"""

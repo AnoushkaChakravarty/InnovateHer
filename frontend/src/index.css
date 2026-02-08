@@ -2,7 +2,63 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Custom scrollbar for dark theme */
+/* ==============================================
+   GameChanger Theme Tokens (Light/Dark)
+   Palette source: Gamechanger3 (light) + Gamechangerdark (dark)
+   ============================================== */
+
+:root {
+  /* Core surfaces */
+  --gc-bg: 255 255 255;          /* #FFFFFF */
+  --gc-bg-muted: 233 230 255;    /* #E9E6FF */
+  --gc-surface: 245 240 255;     /* #F5F0FF */
+  --gc-surface-2: 255 243 234;   /* #FFF3EA */
+
+  /* Text + borders */
+  --gc-text: 6 6 6;              /* #060606 */
+  --gc-text-muted: 95 169 184;   /* #95A9B8 */
+  --gc-border: 95 169 184;       /* #95A9B8 */
+
+  /* Brand accents */
+  --gc-primary: 21 112 179;      /* #1570B3 */
+  --gc-primary-2: 26 88 133;     /* #1A5885 */
+  --gc-accent: 254 80 170;       /* #FE50AA */
+  --gc-accent-soft: 255 167 207; /* #FFA7CF */
+  --gc-warn: 255 171 103;        /* #FFAB67 */
+  --gc-purple: 140 84 152;       /* #8C5498 */
+  --gc-success: 64 161 232;      /* #40A1E8 */
+  --gc-danger: 254 80 170;       /* #FE50AA */
+}
+
+html.dark {
+  /* Core surfaces */
+  --gc-bg: 37 48 57;           /* #253039 */
+  --gc-bg-muted: 25 33 39;     /* #192127 */
+  --gc-surface: 25 33 39;      /* #192127 */
+  --gc-surface-2: 37 48 57;    /* #253039 */
+
+  /* Text + borders */
+  --gc-text: 189 211 227;      /* #BDD3E3 */
+  --gc-text-muted: 149 169 184;/* #95A9B8 */
+  --gc-border: 149 169 184;    /* #95A9B8 */
+
+  /* Brand accents */
+  --gc-primary: 64 161 232;    /* #40A1E8 */
+  --gc-primary-2: 21 112 179;  /* #1570B3 */
+  --gc-accent: 254 80 170;     /* #FE50AA */
+  --gc-accent-soft: 255 167 207;/* #FFA7CF */
+  --gc-warn: 255 171 103;      /* #FFAB67 */
+  --gc-purple: 198 75 255;     /* #C64BFF */
+  --gc-success: 64 161 232;    /* #40A1E8 */
+  --gc-danger: 255 95 104;     /* #FF5F68 */
+}
+
+body {
+  background: rgb(var(--gc-bg));
+  color: rgb(var(--gc-text));
+  transition: background-color 200ms ease, color 200ms ease;
+}
+
 ::-webkit-scrollbar {
   width: 6px;
 }
@@ -10,28 +66,27 @@
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #374151;
+  background: rgb(var(--gc-border) / 0.35);
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #4b5563;
+  background: rgb(var(--gc-border) / 0.55);
 }
 
-/* Range slider accent */
-input[type="range"]::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  height: 18px;
-  width: 18px;
-  border-radius: 50%;
-  background: #6B21A8;
-  cursor: pointer;
-  border: 2px solid #a855f7;
+/* Clean select styling */
+select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2395A9B8' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  padding-right: 28px;
 }
-input[type="range"]::-moz-range-thumb {
-  height: 18px;
-  width: 18px;
-  border-radius: 50%;
-  background: #6B21A8;
-  cursor: pointer;
-  border: 2px solid #a855f7;
+
+/* Number input hide spinners */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
 }

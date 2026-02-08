@@ -33,32 +33,34 @@ def _try_nessie(months: int, spend: float) -> dict | None:
         return None
 
 
-def run_simulation(months: int, spend: float) -> dict:
+def run_simulation(months: int, spend: float, savings: float = None) -> dict:
     """
     Simulate the financial cost of a career break.
 
     Args:
         months: Duration of break (clamped 1-24)
         spend: Monthly spending during break
+        savings: Starting savings balance (defaults to INITIAL_BALANCE)
 
     Returns:
         {'lost': int, 'chart_data': [int, ...]}
     """
     months = max(1, min(24, int(months)))
     spend = max(0, float(spend))
+    starting = float(savings) if savings is not None else INITIAL_BALANCE
 
-    # Try live Nessie API first
+    # Try live Nessie API first (uses its own fixed balance)
     live = _try_nessie(months, spend)
     if live:
         return live
 
     # Deterministic fallback calculation
-    balance = INITIAL_BALANCE
-    chart_data = [balance]
+    balance = starting
+    chart_data = [int(balance)]
 
     for _ in range(months):
         balance = max(0, balance - spend)
         chart_data.append(int(balance))
 
-    lost = INITIAL_BALANCE - chart_data[-1]
+    lost = int(starting) - chart_data[-1]
     return {"lost": int(lost), "chart_data": chart_data}
